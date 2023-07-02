@@ -1,0 +1,305 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+## Bagging
+
+#### Pacotes
+
+```{r}
+#install.packages("AMR")
+#install.packages("rattle")
+#install.packages("randomForest")
+#install.packages('fastDummies')
+#install.packages('caret')
+#install.packages('rattle')
+#install.packages('tree')
+#install.packages('rpart')
+#install.packages('pROC')
+```
+
+```{r}
+library(tidyverse)
+library(AMR)
+library(randomForest)
+library(fastDummies)
+library(caret)
+library(rpart)
+library(rattle)
+library(tree)
+library(pROC)
+library(rpart.plot)
+library(caret)
+library(titanic)
+```
+
+#### Carregando a base de dados
+
+```{r}
+titanic <- as.data.frame(titanic::titanic_train)
+# head(titanic)
+
+# retira a variável Freq
+titanic <- titanic %>% 
+  select(-Name, -Cabin, -Ticket, -PassengerId) %>% 
+  mutate(Survived = as.factor(Survived),
+         Pclass = as.factor(Pclass))
+  
+titanic
+```
+Target: `Survived`
+891 observações
+
+#### Amostras de treino, teste e validação
+60/20/20
+
+```{r}
+#n <- floor(0.60*nrow(titanic))
+#treino_id <- sample(seq_len(nrow(titanic)), size = n)
+#treino <- titanic[treino_id, ]
+#teste <- titanic[-treino_id, ]
+
+set.seed(2360873)
+n <- sample(1:3,size=nrow(titanic),replace=TRUE,prob=c(0.6,0.2,0.2))
+treino <- titanic[n==1,]
+teste <- titanic[n==2,]
+validacao <- titanic[n==3,]
+```
+
+#### Modelo
+
+```{r}
+arvore <- rpart(Survived ~ ., data = treino)
+rpart.plot(arvore)
+
+# custo de complexidade
+printcp(arvore)
+plotcp(arvore)
+```
+
+#### Classe predita
+
+```{r}
+p_treino <- predict(arvore, treino, type = 'class')
+p_teste <- predict(arvore, teste, type = 'class')
+p_validacao <- predict(arvore, validacao, type = 'class') 
+```
+
+### DESEMPENHO
+
+#### Matriz de confusão
+
+Treino
+```{r}
+cm_treino <- confusionMatrix(p_treino, treino$Survived)
+cm_treino
+```
+
+Teste
+```{r}
+cm_teste <- confusionMatrix(p_teste, teste$Survived)
+cm_teste
+```
+
+Validação
+```{r}
+cm_validacao <- confusionMatrix(p_validacao, validacao$Survived)
+cm_validacao
+```
+
+#### AUC e ROC
+
+Treino
+
+```{r}
+treino1 <- predict(arvore, treino, type = 'prob')
+treino1
+
+treino1 <- treino1[,1]
+treino1
+
+auc_titanic_treino <- multiclass.roc(treino$Survived, treino1, percent = TRUE)
+auc_titanic_treino
+
+roc <- auc_titanic_treino[['rocs']]
+auc_titanic_treino1 <- roc[[1]]
+plot.roc(auc_titanic_treino1, print.auc=TRUE, auc.polygon=TRUE, max.auc.polygon=TRUE, auc.polygon.col="lightpink",  
+         main= 'ROC Curve | Titanic | Treino')
+```
+
+Teste
+
+```{r}
+teste1 <- predict(arvore, teste, type = 'prob')
+teste1
+
+teste1 <- teste1[,1]
+teste1
+
+auc_titanic_teste <- multiclass.roc(teste$Survived, teste1, percent = TRUE)
+auc_titanic_teste
+
+roc <- auc_titanic_teste[['rocs']]
+auc_titanic_teste1 <- roc[[1]]
+plot.roc(auc_titanic_teste1, print.auc=TRUE, auc.polygon=TRUE, max.auc.polygon=TRUE, auc.polygon.col="lightpink", 
+         main= 'ROC Curve | Titanic | Teste')
+```
+
+Validação
+
+```{r}
+validacao1 <- predict(arvore, validacao, type = 'prob')
+validacao1
+
+validacao1 <- validacao1[,1]
+validacao1
+
+auc_titanic_validacao <- multiclass.roc(validacao$Survived, validacao1, percent = TRUE)
+auc_titanic_validacao
+
+roc <- auc_titanic_validacao[['rocs']]
+auc_titanic_validacao1 <- roc[[1]]
+plot.roc(auc_titanic_validacao1, print.auc=TRUE, auc.polygon=TRUE, max.auc.polygon=TRUE, auc.polygon.col="lightpink", 
+         main= 'ROC Curve | Titanic | Teste')
+```
+
+#### Gini
+
+```{r}
+gini_treino = 2*(auc_titanic_treino$auc[1]/100) -1 # 2*AUC - 1
+gini_teste = 2*(auc_titanic_teste$auc[1]/100) -1
+gini_validacao = 2*(auc_titanic_validacao$auc[1]/100) -1
+```
+
+#### Desempenho lista
+
+```{r}
+tab <- matrix(
+  c(round(auc_titanic_treino$auc[1]/100,2), 
+    round(auc_titanic_teste$auc[1]/100,2), 
+    round(auc_titanic_validacao$auc[1]/100,2),
+    round(gini_treino,2), round(gini_teste,2), round(gini_validacao,2), 
+    round(cm_treino$overall[['Accuracy']],2), 
+    round(cm_teste$overall[['Accuracy']],2), 
+    round(cm_validacao$overall[['Accuracy']],2)),
+ncol=3, byrow=TRUE)
+
+colnames(tab) <- c('Treino','Teste', 'Validação')
+rownames(tab) <- c('AUC','Gini', 'Acurárcia')
+
+tab <- as.table(tab)
+tab
+```
+
+### Random Forest
+
+O algoritmo do Random Forest funciona da mesma forma que o Bootstrap, porém além de amostrar as linhas da base, amostra também as colunas, de modo a diversificar, e assim aleatorizar, mais as árvores. 
+
+Com uma amostra de treinamento de tamanho $N$, com $P$ variáveis, escolhemos um número $M$ de árvores a serem treinadas. Assim, 
+
+- $M$ amostras de $N$ indivíduos são realizados (as observações são sorteadas com reposisão)
+- Para cada amostra, o número de variáveis pode ser menor ou igual a $P$
+- $M$ árvores são treinadas
+
+Para obtermos a probabilidade de classificação de um indivíduo em cada classe
+
+  1. $M$ árvores são geradas
+  2. Tira-se a média das probabilidades de classificação
+  3. A maior probabilidade define a classificação desse indivíduo
+
+#### Modelo
+
+O modelo de floresta aleatória não aceita casos NA, por isso vou adicionar a média das idades nesses casos.
+
+```{r}
+treino <-  treino %>% mutate(Age = ifelse(is.na(Age), mean(Age, na.rm = TRUE), Age))
+teste <-  teste %>% mutate(Age = ifelse(is.na(Age), mean(Age, na.rm = TRUE), Age))
+validacao <-  validacao %>% mutate(Age = ifelse(is.na(Age), mean(Age, na.rm = TRUE), Age))
+```
+
+```{r}
+# Alguns argumentos da função randomForest():
+# ntree: 500 arvores por default
+# mtry: Número de variáveis selecionadas aleatoriamente em cada divisão
+
+titanic_treino_rf <- randomForest(Survived ~ ., data = treino, mtry = 5, importance = T)
+titanic_treino_rf
+```
+
+```{r}
+p_treino_rf <- predict(titanic_treino_rf, treino, type = "class")
+p_teste_rf <- predict(titanic_treino_rf, teste, type = "class")
+p_validacao_rf <- predict(titanic_treino_rf, validacao, type = "class") 
+```
+
+#### Desempenho
+
+```{r}
+# Acurácia
+acuracia_treino_rf <- confusionMatrix(p_treino_rf, treino$Survived)$overall[['Accuracy']]
+acuracia_teste_rf <- confusionMatrix(p_teste_rf, teste$Survived)$overall[['Accuracy']]
+acuracia_validacao_rf <- confusionMatrix(p_validacao_rf, validacao$Survived)$overall[['Accuracy']]
+
+# AUC
+p_treino_rf1 <- predict(titanic_treino_rf, treino, type = 'prob')
+p_treino_rf1 <- p_treino_rf1[,1]
+auc_titanic_treino_rf <- multiclass.roc(treino$Survived, p_treino_rf1, percent = TRUE)
+auc_titanic_treino_rf1 <- auc_titanic_treino_rf$auc[1]/100
+
+p_teste_rf1 <- predict(titanic_treino_rf, teste, type = 'prob')
+p_teste_rf1 <- p_teste_rf1[,1]
+auc_titanic_teste_rf <- multiclass.roc(teste$Survived, p_teste_rf1, percent = TRUE)
+auc_titanic_teste_rf1 <- auc_titanic_teste_rf$auc[1]/100
+
+p_validacao_rf1 <- predict(titanic_treino_rf, validacao, type = 'prob')
+p_validacao_rf1 <- p_validacao_rf1[,1]
+auc_titanic_validacao_rf <- multiclass.roc(validacao$Survived, p_validacao_rf1, percent = TRUE)
+auc_titanic_validacao_rf1 <- auc_titanic_validacao_rf$auc[1]/100
+
+# Gini
+gini_treino_rf = 2*(auc_titanic_treino_rf$auc[1]/100) -1 # 2*AUC - 1
+gini_teste_rf = 2*(auc_titanic_teste_rf$auc[1]/100) -1
+gini_validacao_rf = 2*(auc_titanic_validacao_rf$auc[1]/100) -1
+```
+
+```{r}
+tab_rf <- matrix(c(round(auc_titanic_treino_rf1,2), 
+                   round(auc_titanic_teste_rf1,2), 
+                   round(auc_titanic_validacao_rf1,2),
+                   round(gini_treino_rf,2), 
+                   round(gini_teste_rf,2), 
+                   round(gini_validacao_rf,2),
+                   round(acuracia_treino_rf,2), 
+                   round(acuracia_teste_rf,2),
+                   round(acuracia_validacao_rf,2)),
+                 ncol=3, byrow=TRUE)
+
+colnames(tab_rf) <- c('Treino','Teste','Validação')
+rownames(tab_rf) <- c('AUC','Gini','Acurárcia')
+
+tab_rf <- as.table(tab_rf)
+tab_rf
+```
+
+### Gridsearch
+
+```{r}
+# ajustando NA da coluna de idade
+titanic1 <- titanic %>% mutate(Age = ifelse(is.na(Age), mean(Age, na.rm = TRUE), Age))
+```
+
+```{r}
+# number: number of folds for training
+# repeats: keep the number for training
+
+controle <- trainControl(method='repeatedcv', number=10, repeats=3, search='grid')
+tune <- expand.grid(.mtry = (1:7)) 
+
+gridsearch_rf <- train(Survived ~ ., data = titanic1, method = 'rf', metric='Accuracy', tuneGrid = tunegrid)
+
+print(gridsearch_rf)
+plot(gridsearch_rf)
+```
+
+

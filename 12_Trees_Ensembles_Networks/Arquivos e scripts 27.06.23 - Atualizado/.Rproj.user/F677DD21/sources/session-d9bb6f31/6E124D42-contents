@@ -1,0 +1,18 @@
+mean_values
+correlation_matrix
+
+prob_default
+
+inadimplencia
+
+bool_treino
+
+treino %>% head
+treino %>% dim
+teste  %>% dim
+
+p_treino
+
+tmp %>% str
+
+aval_teste %>% head
