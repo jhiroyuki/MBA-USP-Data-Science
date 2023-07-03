@@ -1,18 +1,25 @@
 # MBA USP/ESALQ em Data Science e Data Analytics
 
-Este repositório contém os materiais e projetos desenvolvidos durante o meu MBA em Data Science e Data Analytics pela USP/ESALQ. Aqui você encontrará exemplos de código, conjuntos de dados, notebooks Jupyter e outros recursos relacionados aos meus estudos.
+Este repositório contém os materiais e projetos desenvolvidos durante o meu MBA em Data Science e Data Analytics pela USP/ESALQ. Aqui você encontrará exemplos de códigos, datasets, notebooks Jupyter e outros recursos relacionados aos meus estudos.
 
 ## Módulos
 
 1. [Unsupervised Machine Learning: Clustering](./01_Unsupervised_ML_Clustering)
+- Planejamento: Implementar o código em Python em um notebook Jupyter para facilitar a execução e visualização dos exemplos. Pretendo adicionar mais exemplos.
 2. [Unsupervised Machine Learning: Análise Fatorial e PCA](./02_Unsupervised_ML_Fatorial_PCA)
+- Planejamento: Implementar o código em Python em um notebook Jupyter para facilitar a execução e visualização dos exemplos.
 3. [Unsupervised Machine Learning: Análise de Correspondência Simples e Múltipla](./03_Unsupervised_ML_Anacor_MCA)
+- Planejamento: Implementar o código em Python em um notebook Jupyter para facilitar a execução e visualização dos exemplos.
 4. [Unsupervised Machine Learning: Exercícios Aplicados](./04_Unsupervised_ML_Examples)
+- Planejamento: Implementar o código em Python em um notebook Jupyter para facilitar a execução e visualização dos exemplos.
 5. [Supervised Machine Learning: Análise de Regressão Simples e Múltipla](./05_Supervised_ML_Linear)
 6. [Supervised Machine Learning: Modelos Logísticos Binários e Multinomiais](./06_Supervised_ML_Logistic)
 7. [Supervised Machine Learning: Modelos para Dados de Contagem](./07_Supervised_ML_Count_Data)
 8. [Supervised Machine Learning: Modelagem Multinível ](./08_Supervised_ML_Multilevel)
+- Planejamento: Adicionar uma seção dedicada ao modelo HLM3, abordando seus conceitos, aplicação e exemplos práticos.
 9. [Big Data e Deployment de Modelos](./09_Big_Data_Deployment)
+- Planejamento: Disponibilizar o dataset em formato CSV utilizado no exemplo de big data.
+
 
 ## Slides
 
