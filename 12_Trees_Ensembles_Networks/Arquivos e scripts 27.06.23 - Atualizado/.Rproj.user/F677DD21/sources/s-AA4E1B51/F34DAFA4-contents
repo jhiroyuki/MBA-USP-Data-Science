@@ -1,8 +1,0 @@
-n %>% length
-
-n%>% table
-
-titanic %>% head
-
-
-x %>% hist()

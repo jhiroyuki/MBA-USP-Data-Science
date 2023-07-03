@@ -1,9 +1,0 @@
-{
-    "path": "E:/code/aula-big-data/datasets/arquivos-comprimidos/voos-avioes-anos.parquet",
-    "sortOrder": [
-        {
-            "columnIndex": 2,
-            "ascending": true
-        }
-    ]
-}
