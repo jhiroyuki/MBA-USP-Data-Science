@@ -7,7 +7,12 @@ Este repositório contém os materiais e projetos desenvolvidos durante o meu MB
 - [01. Unsupervised Machine Learning: Clustering](./01_Unsupervised_ML_Clustering)
 - [02. Unsupervised Machine Learning: Análise Fatorial e PCA](./02_Unsupervised_ML_Fatorial_PCA)
 - [03. Unsupervised Machine Learning: Análise de Correspondência Simples e Múltipla](./03_Unsupervised_ML_Anacor_MCA)
-- ...
+- [04. Unsupervised Machine Learning: Exercícios Aplicados](./04_Unsupervised_ML_Examples)
+- [05. Supervised Machine Learning: Análise de Regressão Simples e Múltipla](./05_Supervised_ML_Linear)
+- [06. Supervised Machine Learning: Modelos Logísticos Binários e Multinomiais](./06_Supervised_ML_Logistic)
+- [07. Supervised Machine Learning: Modelos para Dados de Contagem](./07_Supervised_ML_Count_Data)
+- [08. Supervised Machine Learning: Modelagem Multinível ](./08_Supervised_ML_Multilevel)
+- [09. Big Data e Deployment de Modelos](./09_Big_Data_Deployment)
 
 ## Slides
 
