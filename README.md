@@ -20,7 +20,9 @@ Este repositório contém os materiais e projetos desenvolvidos durante o meu MB
 
 ## Códigos
 
-Cada módulo possui uma pasta separada contendo os códigos relacionados a esse módulo específico. Os códigos estão disponíveis em notebooks Jupyter ou outros formatos relevantes.
+**Observação:** O curso disponibiliza códigos em R para os módulos. No entanto, neste repositório, os códigos foram recriados em Python por motivos de aprendizado pessoal. Portanto, os códigos aqui presentes são implementados em Python.
+
+Os códigos originais em R não estão disponíveis neste repositório, pois sua reprodução pública violaria as restrições de reprodução estabelecidas pelo curso. Recomendamos que você acesse os códigos em R por meio dos canais oficiais do curso.
 
 ## Datasets
 
