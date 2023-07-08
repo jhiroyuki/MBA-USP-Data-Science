@@ -6,7 +6,6 @@ Este repositório contém os materiais e projetos desenvolvidos durante o meu MB
 
 1. [Unsupervised Machine Learning: Clustering](./01_Unsupervised_ML_Clustering)
 2. [Unsupervised Machine Learning: Análise Fatorial e PCA](./02_Unsupervised_ML_Fatorial_PCA)
-- Planejamento: Implementar o código em Python em um notebook Jupyter para facilitar a execução e visualização dos exemplos.
 3. [Unsupervised Machine Learning: Análise de Correspondência Simples e Múltipla](./03_Unsupervised_ML_Anacor_MCA)
 - Planejamento: Implementar o código em Python em um notebook Jupyter para facilitar a execução e visualização dos exemplos.
 4. [Unsupervised Machine Learning: Exercícios Aplicados](./04_Unsupervised_ML_Examples)
