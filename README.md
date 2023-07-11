@@ -16,7 +16,7 @@ Este repositório contém os materiais e projetos desenvolvidos durante o meu MB
 9. [Big Data e Deployment de Modelos](./09_Big_Data_Deployment)
 - Planejamento: Disponibilizar o dataset em formato CSV utilizado no exemplo de big data.
 10. Séries Temporais (a ser feito)
-11. Data Wrangling (a ser feito)
+11. [Data Wrangling](./11_Data_Wrangling)
 12. Árvores, Redes e Ensemble Models (a ser feito)
 13. Deep Learning (a ser feito)
 14. Coleta de Dados: Crawlers e Web Scraping (a ser feito)
