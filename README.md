@@ -15,7 +15,8 @@ Este repositório contém os materiais e projetos desenvolvidos durante o meu MB
 - Planejamento: Adicionar uma seção dedicada ao modelo HLM3, abordando seus conceitos, aplicação e exemplos práticos.
 9. [Big Data e Deployment de Modelos](./09_Big_Data_Deployment)
 - Planejamento: Disponibilizar o dataset em formato CSV utilizado no exemplo de big data.
-10. Séries Temporais (a ser feito)
+10. [Séries Temporais](./10_Time_Series)
+- Planejamento: Adicionar análise de resíduos, teste de Ljung-box, teste de normalidade dos resíduos e exemplos.
 11. [Data Wrangling](./11_Data_Wrangling)
 12. Árvores, Redes e Ensemble Models (a ser feito)
 13. Deep Learning (a ser feito)
