@@ -18,7 +18,8 @@ Este repositório contém os materiais e projetos desenvolvidos durante o meu MB
 10. [Séries Temporais](./10_Time_Series)
 - Planejamento: Adicionar análise de resíduos, teste de Ljung-box, teste de normalidade dos resíduos e exemplos.
 11. [Data Wrangling](./11_Data_Wrangling)
-12. Árvores, Redes e Ensemble Models (a ser feito)
+12. [Árvores, Redes e Ensemble Models](./12_Trees_Networks)
+- Planejamento: Adicionar exemplo de XGBoosting, explicar mais fundamentos de modelos de ensemble. Adicionar seção de redes neurais.
 13. Deep Learning (a ser feito)
 14. Coleta de Dados: Crawlers e Web Scraping (a ser feito)
 15. Text Mining, Sentiment Analysis e NLP (a ser feito)
